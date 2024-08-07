@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Service
-annotation class Business(
+annotation class Converter(
     @get:AliasFor(annotation = Service::class)
     val value: String = ""
 )

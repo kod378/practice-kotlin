@@ -29,7 +29,7 @@ class LoggerFilter: Filter {
             val headerValue = cacheRequest.getHeader(headerName)
 
             // authorization-token : ??? , user-agent : ??? ,
-            headerValues.append("[$headerName : ${cacheRequest.getHeader(headerName)}] ")
+            headerValues.append("[$headerName : $headerValue] ")
         }
 
         val requestBody = String(cacheRequest.contentAsByteArray)
