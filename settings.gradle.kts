@@ -4,4 +4,5 @@ plugins {
 rootProject.name = "kotlindemo"
 include("db")
 include("user-api")
-//include("admin-api")
+include("admin-api")
+include("common")

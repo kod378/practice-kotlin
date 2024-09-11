@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="kor" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <H1>MAIN PAGE</H1>
+
+<!--    <H1 th:text="${#authentication.name}"></H1> <br>-->
+<!--    <H1 th:text="${#authentication.principal.storeName}"></H1> <br>-->
+<!--    <H1 th:text="${#authentication.principal.role}"></H1> <br>-->
+
+<!--    <H1 th:text="${#authentication}"></H1> <br>-->
+
+</body>
+<script>
+    const url = "http://localhost:8081/api/sse/connect";   // 접속주소
+    const eventSource = new EventSource(url);   // sse 연결
+
+    eventSource.onopen = event => {
+        console.log("see connection")
+        console.log(event)
+    }
+
+    eventSource.onmessage = event => {
+        console.log("receive data : "+event.data)
+    }
+</script>
+</html>

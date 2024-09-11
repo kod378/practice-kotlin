@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+        <file>logs/api/errorLogFile.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 로그 파일 패턴 및 저장 위치 -->
+            <fileNamePattern>logs/userApi/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+
+            <!-- 로그 파일의 최대 크기 설정 (10MB) -->
+            <maxFileSize>10MB</maxFileSize>
+
+            <!-- 보관할 로그 파일의 최대 크기 설정 -->
+            <totalSizeCap>500MB</totalSizeCap>
+
+            <!-- 로그 파일 보관 기간 설정 (30일) -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

@@ -7,7 +7,7 @@ plugins {
 }
 
 subprojects {
-    group = "org.apple"
+    group = "org.delivery"
     version = "0.0.1-SNAPSHOT"
 
     repositories {

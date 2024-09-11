@@ -1,4 +1,25 @@
-#db 모듈에 있는 설정을 import
 spring:
   config:
-    import: classpath:application-db.yaml
+    import:
+      - classpath:application-db.yaml
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123!@#
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+
+token:
+  secret:
+    key: UserSpringBootJWTHelperTokenSecretKeyValue123!@#
+  access-token:
+    plus-hour: 1
+  refresh-token:
+    plus-hour: 12
