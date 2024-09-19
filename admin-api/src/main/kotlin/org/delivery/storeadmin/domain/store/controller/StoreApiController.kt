@@ -7,6 +7,7 @@ import org.delivery.storeadmin.domain.store.business.StoreBusiness
 import org.delivery.storeadmin.domain.store.model.StoreRegisterRequest
 import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,6 +25,14 @@ class StoreApiController(
         @Valid @RequestBody storeRegisterRequest: StoreRegisterRequest
     ): Api<StoreResponse> {
         val response = storeBusiness.register(storeRegisterRequest, user.id)
+        return Api.OK(response)
+    }
+
+    @GetMapping("")
+    fun getStores(
+        @AuthenticationPrincipal user: UserSession,
+    ): Api<StoreResponse?> {
+        val response = user.storeResponse?.let { storeBusiness.getStore(it.id) }
         return Api.OK(response)
     }
 }

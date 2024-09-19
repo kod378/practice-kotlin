@@ -25,7 +25,7 @@ class TokenConverter {
             accessTokenExpiredAt = accessToken.expiredAt,
             refreshToken = refreshToken.token,
             refreshTokenExpiredAt = refreshToken.expiredAt,
-            storeSimpleResponse = hasStore.storeSimpleResponse
+            storeResponse = hasStore.storeResponse
         )
     }
 }

@@ -5,6 +5,7 @@ import org.delivery.db.store.StoreEntity
 import org.delivery.db.storeuser.StoreUserEntity
 import org.delivery.storeadmin.domain.authorization.model.UserSession
 import org.delivery.storeadmin.domain.authorization.model.StoreUserRegisterRequest
+import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.delivery.storeadmin.domain.store.model.StoreSimpleResponse
 import org.delivery.storeadmin.domain.storeuser.model.StoreUserResponse
 
@@ -34,9 +35,16 @@ class StoreUserConverter() {
                 unregisteredAt = storeUserEntity.unregisteredAt,
                 lastLoginAt = storeUserEntity.lastLoginAt,
             ),
-            storeSimpleResponse = storeEntity?.let { StoreSimpleResponse(
+            storeResponse = storeEntity?.let { StoreResponse(
                 id = it.id!!,
                 name = it.name,
+                address = it.address,
+                category = it.category,
+                star = it.star,
+                thumbnailUrl = it.thumbnailUrl,
+                minimumAmount = it.minimumAmount,
+                minimumDeliveryAmount = it.minimumDeliveryAmount,
+                phoneNumber = it.phoneNumber,
             ) }
         )
     }
@@ -52,7 +60,7 @@ class StoreUserConverter() {
                 unregisteredAt = userSession.unregisteredAt,
                 lastLoginAt = userSession.lastLoginAt,
             ),
-            storeSimpleResponse = userSession.storeSimpleResponse
+            storeResponse = userSession.storeResponse
         )
     }
 }

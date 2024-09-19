@@ -1,7 +1,7 @@
 package org.delivery.storeadmin.domain.token.model
 
+import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.delivery.storeadmin.domain.storeuser.ifs.HasStore
-import org.delivery.storeadmin.domain.store.model.StoreSimpleResponse
 import java.time.LocalDateTime
 
 data class TokenResponse(
@@ -10,5 +10,5 @@ data class TokenResponse(
     val refreshToken: String,
     val refreshTokenExpiredAt: LocalDateTime,
 
-    override val storeSimpleResponse: StoreSimpleResponse? = null,
+    override val storeResponse: StoreResponse? = null,
 ): HasStore

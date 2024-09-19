@@ -25,4 +25,9 @@ class StoreBusiness(
 
         return storeConverter.toResponse(registeredStoreEntity)
     }
+
+    fun getStore(id: Long): StoreResponse {
+        val storeEntity = storeService.getStoreWithThrow(id)
+        return storeConverter.toResponse(storeEntity)
+    }
 }

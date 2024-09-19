@@ -30,7 +30,7 @@ class SseApiController(
 
         val userSessionConnection = UserSseConnection.connect(
 //            userSession.storeId.toString(),
-            userSession.storeSimpleResponse?.id.toString(),
+            userSession.storeResponse?.id.toString(),
             sseConnectionPool,
             objectMapper
         )
@@ -43,7 +43,7 @@ class SseApiController(
         @Parameter(hidden = true)
         @AuthenticationPrincipal userSession: UserSession
     ) {
-        val userSseConnection = sseConnectionPool.getSession(userSession.storeSimpleResponse?.id.toString())
+        val userSseConnection = sseConnectionPool.getSession(userSession.storeResponse?.id.toString())
 
         userSseConnection?.sendMessage("hello world")
     }

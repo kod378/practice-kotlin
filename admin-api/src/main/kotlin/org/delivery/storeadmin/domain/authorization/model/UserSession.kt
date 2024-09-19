@@ -1,5 +1,8 @@
 package org.delivery.storeadmin.domain.authorization.model
 
+import org.delivery.db.storeuser.enums.StoreUserRole
+import org.delivery.db.storeuser.enums.StoreUserStatus
+import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.delivery.storeadmin.domain.storeuser.ifs.HasStore
 import org.delivery.storeadmin.domain.store.model.StoreSimpleResponse
 import org.springframework.security.core.GrantedAuthority
@@ -12,14 +15,15 @@ data class UserSession(
     val id: Long,
     val email: String,
     private val _password: String,
-    val status: org.delivery.db.storeuser.enums.StoreUserStatus,
-    val role: org.delivery.db.storeuser.enums.StoreUserRole,
+    val status: StoreUserStatus,
+    val role: StoreUserRole,
     val registeredAt: LocalDateTime,
     val unregisteredAt: LocalDateTime? = null,
     val lastLoginAt: LocalDateTime? = null,
 
     // store
-    override val storeSimpleResponse: StoreSimpleResponse? = null
+//    override val storeSimpleResponse: StoreSimpleResponse? = null
+    override val storeResponse: StoreResponse? = null
 ): UserDetails, HasStore {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(this.role.name))

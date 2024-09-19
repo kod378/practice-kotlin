@@ -23,7 +23,7 @@ class StoreEntity(
     @field:Column(length = 50, nullable = false)
     var category: StoreCategory,
 
-    var star: Double,
+    var star: Double,   // 별점
 
     @field:Column(length = 200, nullable = false)
     var thumbnailUrl: String,

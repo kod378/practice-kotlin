@@ -14,12 +14,12 @@ class StoreMenuApiController(
     private val storeMenuBusiness: StoreMenuBusiness
 ) {
 
-    @GetMapping("/search")
-    fun search(
-        @RequestParam storeId: Long
-    ): Api<List<StoreMenuResponse>> {
-        val response = storeMenuBusiness.search(storeId)
-        return Api.OK(response)
-    }
+//    @GetMapping("/search")
+//    fun search(
+//        @RequestParam storeId: Long
+//    ): Api<List<StoreMenuResponse>> {
+//        val response = storeMenuBusiness.search(storeId)
+//        return Api.OK(response)
+//    }
 
 }
