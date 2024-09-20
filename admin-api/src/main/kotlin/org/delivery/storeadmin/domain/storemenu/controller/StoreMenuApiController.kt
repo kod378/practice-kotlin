@@ -7,6 +7,7 @@ import org.delivery.storeadmin.domain.storemenu.business.StoreMenuBusiness
 import org.delivery.storeadmin.domain.storemenu.model.StoreMenuRegisterRequest
 import org.delivery.storeadmin.domain.storemenu.model.StoreMenuResponse
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,5 +26,13 @@ class StoreMenuApiController(
     ): Api<StoreMenuResponse> {
        val response = storeMenuBusiness.register(request, user)
        return Api.OK(response)
+    }
+
+    @GetMapping
+    fun getStoreMenus(
+        @AuthenticationPrincipal user: UserSession
+    ): Api<List<StoreMenuResponse>> {
+        val response = storeMenuBusiness.getStoreMenus(user)
+        return Api.OK(response)
     }
 }

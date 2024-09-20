@@ -32,4 +32,12 @@ class StoreMenuBusiness(
         val list = storeMenuService.getStoreMenusByStoreId(storeId)
         return list.map { storeMenuConverter.toResponse(it) }
     }
+
+    fun getStoreMenus(user: UserSession): List<StoreMenuResponse> {
+        val store = user.storeResponse?.let { storeService.getStoreWithThrow(it.id) }
+            ?: throw ApiException(StoreErrorCode.STORE_NOT_FOUND)
+
+        val list = storeMenuService.getStoreMenusByStoreId(store.id!!)
+        return list.map { storeMenuConverter.toResponse(it) }
+    }
 }
