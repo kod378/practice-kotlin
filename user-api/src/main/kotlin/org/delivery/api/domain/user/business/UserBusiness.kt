@@ -11,6 +11,8 @@ import org.delivery.api.domain.user.model.UserRegisterRequest
 import org.delivery.api.domain.user.model.UserResponse
 import org.delivery.api.domain.user.service.UserService
 import org.delivery.common.annotation.Business
+import org.delivery.common.error.UserErrorCode
+import org.delivery.db.user.enums.UserStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Business
@@ -20,12 +22,23 @@ class UserBusiness(
     private val passwordEncoder: BCryptPasswordEncoder,
     private val tokenBusiness: TokenBusiness
 ) {
-    fun register(requestDto: UserRegisterRequest) : UserResponse {
-        //TODO email 중복 체크 및 에러 처리
+    fun register(requestDto: UserRegisterRequest) : TokenResponse {
+        // email 중복 체크
+        try {
+            userService.getUserWithThrow(requestDto.email)
+            throw ApiException(UserErrorCode.DUPLICATE_EMAIL)
+        } catch (e: ApiException) {
+            if (e.errorCodeIfs != UserErrorCode.USER_NOT_FOUND) {
+                throw e
+            }
+        }
+
         val encodedPassword = passwordEncoder.encode(requestDto.password)
         val encodedUser = requestDto.copy(password = encodedPassword)
-        val user = userService.register(userConverter.toEntity(encodedUser, org.delivery.db.user.enums.UserStatus.REGISTERED))
-        return userConverter.toResponseDto(user)
+        val user = userService.register(userConverter.toEntity(encodedUser, UserStatus.REGISTERED))
+
+        val tokenResponse = tokenBusiness.issueToken(user)
+        return tokenResponse
     }
 
     /**

@@ -20,19 +20,17 @@ class UserOpenApiController(
 
     @PostMapping
     fun register(
-        @Valid
-        @RequestBody request: Api<UserRegisterRequest>
-    ) : Api<UserResponse> {
-        val response = userBusiness.register(request.body)
+        @Valid @RequestBody request: UserRegisterRequest
+    ) : Api<TokenResponse> {
+        val response = userBusiness.register(request)
         return Api.OK(response)
     }
 
     @PostMapping("/login")
     fun login(
-        @Valid
-        @RequestBody request: Api<UserLoginRequest>
+        @Valid @RequestBody request: UserLoginRequest
     ): Api<TokenResponse> {
-        val response = userBusiness.login(request.body)
+        val response = userBusiness.login(request)
         return Api.OK(response)
     }
 }

@@ -20,9 +20,9 @@ class StoreMenuBusiness(
 //        val response = storeMenuConverter.toResponse(savedEntity)
 //        return response
 //    }
-//
-//    fun search(storeId: Long): List<StoreMenuResponse> {
-//        val list = storeMenuService.getStoreMenusByStoreId(storeId)
-//        return list.map { storeMenuConverter.toResponse(it) }
-//    }
+
+    fun search(storeId: Long): List<StoreMenuResponse> {
+        val list = storeMenuService.getStoreMenusByStoreId(storeId)
+        return list.map { storeMenuConverter.toResponse(it) }
+    }
 }

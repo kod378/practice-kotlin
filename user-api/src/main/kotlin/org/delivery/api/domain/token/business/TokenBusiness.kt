@@ -23,7 +23,7 @@ class TokenBusiness(
         val userId = userEntity?.id ?: throw ApiException(ErrorCode.NULL_POINTER, "userEntity is null")
         val accessToken = tokenService.issueAccessToken(userId)
         val refreshToken = tokenService.issueRefreshToken(userId)
-        return tokenConverter.toResponseDto(accessToken, refreshToken)
+        return tokenConverter.toResponseDto(accessToken, refreshToken, userEntity)
     }
 
     fun validateAccessToken(accessToken: String): Long {

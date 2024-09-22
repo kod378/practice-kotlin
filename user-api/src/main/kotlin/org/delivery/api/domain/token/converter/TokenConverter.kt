@@ -5,13 +5,15 @@ import org.delivery.common.exception.ApiException
 import org.delivery.api.domain.token.model.Token
 import org.delivery.api.domain.token.model.TokenResponse
 import org.delivery.common.annotation.Converter
+import org.delivery.db.user.UserEntity
 
 @Converter
 class TokenConverter {
 
     fun toResponseDto(
         accessToken: Token?,
-        refreshToken: Token?
+        refreshToken: Token?,
+        userEntity: UserEntity
     ): TokenResponse {
 
         if (accessToken == null || refreshToken == null) {
@@ -22,7 +24,10 @@ class TokenConverter {
             accessToken = accessToken.token,
             accessTokenExpiredAt = accessToken.expiredAt,
             refreshToken = refreshToken.token,
-            refreshTokenExpiredAt = refreshToken.expiredAt
+            refreshTokenExpiredAt = refreshToken.expiredAt,
+
+            userId = userEntity.id!!,
+            username = userEntity.name
         )
     }
 }

@@ -11,17 +11,17 @@ class StoreMenuService(
     private val storeMenuRepository: org.delivery.db.storemenu.StoreMenuRepository,
 ) {
 
-//    fun register(storeMenuEntity: StoreMenuEntity): StoreMenuEntity {
-//        return storeMenuRepository.save(storeMenuEntity)
-//    }
-//
-//    fun getStoreMenusByStoreId(storeId: Long): List<StoreMenuEntity> {
-//        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatus.REGISTERED)
-//            ?: throw ApiException(ErrorCode.NULL_POINTER)
-//    }
-//
-//    fun getStoreMenuWithThrow(id: Long): StoreMenuEntity {
-//        val storeMenu = storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatus.REGISTERED)
-//        return storeMenu ?: throw ApiException(ErrorCode.NULL_POINTER)
-//    }
+    fun register(storeMenuEntity: StoreMenuEntity): StoreMenuEntity {
+        return storeMenuRepository.save(storeMenuEntity)
+    }
+
+    fun getStoreMenusByStoreId(storeId: Long): List<StoreMenuEntity> {
+        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatus.REGISTERED)
+            ?: throw ApiException(ErrorCode.NULL_POINTER)
+    }
+
+    fun getStoreMenuWithThrow(id: Long): StoreMenuEntity {
+        val storeMenu = storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatus.REGISTERED)
+        return storeMenu ?: throw ApiException(ErrorCode.NULL_POINTER)
+    }
 }

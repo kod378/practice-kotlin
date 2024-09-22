@@ -13,19 +13,15 @@ class TokenService(
 
     fun issueAccessToken(userId: Long): Token {
         val data = mapOf("userId" to userId)
-        return tokenHelperIfs.issueAccessToken(data)
+        return tokenHelperIfs.issueAccessToken(data, userId)
     }
 
     fun issueRefreshToken(userId: Long): Token {
         val data = mapOf("userId" to userId)
-        return tokenHelperIfs.issueRefreshToken(data)
+        return tokenHelperIfs.issueRefreshToken(data, userId)
     }
 
     fun validateToken(token: String): Long {
-        val map = tokenHelperIfs.validateToken(token) //Map<String, Any>
-        println("validateToken map : $map")
-        val userId = map["userId"] as? Int //jwt parser가 반환하는 Map에 java.lang.Integer로 들어가 있음
-            ?: throw ApiException(ErrorCode.NULL_POINTER, "userId is null")
-        return userId.toLong()
+        return tokenHelperIfs.validateToken(token).toLong()
     }
 }

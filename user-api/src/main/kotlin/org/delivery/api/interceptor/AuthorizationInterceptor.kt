@@ -23,7 +23,12 @@ class AuthorizationInterceptor(
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         log.info("Authorization Interceptor url : ${request.requestURI}")
 
-        // WEB,chrome 의 경우 GET, POST, OPTIONS = pass
+        // open-api 는 pass
+        if (request.requestURI.contains("/open-api/")) {
+            return true
+        }
+
+        // WEB,chrome 의 경우 OPTIONS = pass
         if (HttpMethod.OPTIONS.matches(request.method)) {
             return true
         }

@@ -25,15 +25,15 @@ class JwtTokenHelper(
     val refreshTokenPlusHour: Long,
 ): TokenHelperIfs {
 
-    override fun issueAccessToken(data: Map<String, Any>): Token {
-        return jwtTokenWithPlusHour(data, accessTokenPlusHour)
+    override fun issueAccessToken(data: Map<String, Any>, userId: Long): Token {
+        return jwtTokenWithPlusHour(data, userId, accessTokenPlusHour)
     }
 
-    override fun issueRefreshToken(data: Map<String, Any>): Token {
-        return jwtTokenWithPlusHour(data, refreshTokenPlusHour)
+    override fun issueRefreshToken(data: Map<String, Any>, userId: Long): Token {
+        return jwtTokenWithPlusHour(data, userId, refreshTokenPlusHour)
     }
 
-    override fun validateToken(token: String): Map<String, Any> {
+    override fun validateToken(token: String): String {
         val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
         val parser = Jwts.parserBuilder()
             .setSigningKey(key)
@@ -41,7 +41,8 @@ class JwtTokenHelper(
 
         try {
             val result = parser.parseClaimsJws(token)
-            return result.body
+//            return result.body
+            return result.body.subject
         } catch (e: Exception) {
             when (e) {
                 //토큰이 유효하지 않음
@@ -60,7 +61,7 @@ class JwtTokenHelper(
         }
     }
 
-    private fun jwtTokenWithPlusHour(data: Map<String, Any>, tokenPlusHour: Long): Token {
+    private fun jwtTokenWithPlusHour(data: Map<String, Any>, userId:Long, tokenPlusHour: Long): Token {
         val expiredLocalDateTime = LocalDateTime.now().plusHours(tokenPlusHour)
         val expiredAt = Date.from(
             expiredLocalDateTime.atZone(
@@ -73,6 +74,7 @@ class JwtTokenHelper(
         val jwtToken = Jwts.builder()
             .signWith(key, SignatureAlgorithm.HS256)
             .setClaims(data)
+            .setSubject(userId.toString())
             .setExpiration(expiredAt)
             .compact()
 

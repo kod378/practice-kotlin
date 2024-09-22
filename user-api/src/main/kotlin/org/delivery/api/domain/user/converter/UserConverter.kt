@@ -25,7 +25,7 @@ class UserConverter {
             id = userEntity.id?: throw ApiException(UserErrorCode.USER_NOT_FOUND),
             name = userEntity.name,
             email = userEntity.email,
-            address = userEntity.address,
+//            address = userEntity.address,
             status = userEntity.status,
         )
     }

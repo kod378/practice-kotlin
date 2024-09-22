@@ -4,8 +4,8 @@ import org.delivery.api.domain.token.model.Token
 
 interface TokenHelperIfs {
 
-    fun issueAccessToken(data: Map<String, Any>): Token
-    fun issueRefreshToken(data: Map<String, Any>): Token
+    fun issueAccessToken(data: Map<String, Any>, userId: Long): Token
+    fun issueRefreshToken(data: Map<String, Any>, userId: Long): Token
 
-    fun validateToken(token: String): Map<String, Any>
+    fun validateToken(token: String): String
 }

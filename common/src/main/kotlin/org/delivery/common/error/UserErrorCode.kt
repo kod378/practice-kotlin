@@ -11,4 +11,5 @@ enum class UserErrorCode(
 ): ErrorCodeIfs {
 
     USER_NOT_FOUND(400, 1404, "사용자를 찾을 수 없습니다."),
+    DUPLICATE_EMAIL(400, 1405, "이미 사용중인 이메일입니다."),
 }

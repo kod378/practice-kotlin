@@ -47,7 +47,7 @@ class UserSessionResolver(
             name = userEntity.name,
             email = userEntity.email,
             password = userEntity.password,
-            address = userEntity.address,
+//            address = userEntity.address,
             status = userEntity.status,
             createdAt = userEntity.createdAt!!,
             updatedAt = userEntity.updatedAt!!

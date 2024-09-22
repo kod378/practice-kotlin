@@ -17,8 +17,8 @@ class UserEntity(
     @field:Column(length = 100, nullable = false)
     var password: String,
 
-    @field:Embedded
-    var address: Address?= null,
+//    @field:Embedded
+//    var address: Address?= null,
 
     @field:Column(length = 50, nullable = false)
     @field:Enumerated(EnumType.STRING)
