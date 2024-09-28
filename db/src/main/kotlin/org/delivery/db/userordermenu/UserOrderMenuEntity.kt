@@ -21,4 +21,6 @@ class UserOrderMenuEntity(
     @field:Column(length = 50, nullable = false)
     @field:Enumerated(EnumType.STRING)
     var status: UserOrderMenuStatus = UserOrderMenuStatus.REGISTERED,
+
+    var quantity: Int = 1,
 ): BaseEntity()

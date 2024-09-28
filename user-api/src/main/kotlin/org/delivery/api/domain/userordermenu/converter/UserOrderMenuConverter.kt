@@ -12,11 +12,13 @@ class UserOrderMenuConverter {
 
     fun toEntity(
         userOrderEntity: UserOrderEntity,
-        storeMenuEntity: StoreMenuEntity
+        storeMenuEntity: StoreMenuEntity,
+        quantity: Int,
     ): UserOrderMenuEntity {
         return UserOrderMenuEntity(
             userOrder = userOrderEntity,
             storeMenu = storeMenuEntity,
+            quantity = quantity,
         )
     }
 }

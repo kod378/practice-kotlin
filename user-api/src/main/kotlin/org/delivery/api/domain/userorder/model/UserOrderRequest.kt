@@ -8,5 +8,5 @@ data class UserOrderRequest(
     val storeId: Long,
 
     @field:NotNull
-    val storeMenuIds: List<Long>,
+    val userOrderMenuRequestList: List<UserOrderMenuRequest>
 )

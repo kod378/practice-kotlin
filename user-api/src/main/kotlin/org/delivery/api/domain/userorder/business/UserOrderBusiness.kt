@@ -14,8 +14,11 @@ import org.delivery.api.domain.userorder.service.UserOrderService
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService
 import org.delivery.common.annotation.Business
+import org.delivery.common.error.UserOrderErrorCode
+import org.delivery.common.exception.ApiException
 import org.delivery.common.log.logger
 import org.delivery.db.userorder.enums.UserOrderMenuStatus
+import org.springframework.transaction.annotation.Transactional
 
 @Business
 class UserOrderBusiness(
@@ -34,18 +37,21 @@ class UserOrderBusiness(
     // 2. userOrder 생성
     // 3. userOrderMenu 생성
     // 4. 응답 생성
+    @Transactional
     fun userOrder(user: User, userOrderRequest: UserOrderRequest): UserOrderResponse {
 
         val store = storeService.getStoreWithThrow(userOrderRequest.storeId)
 
-        val storeMenuEntityList = userOrderRequest.storeMenuIds.map { storeMenuService.getStoreMenuWithThrow(it) }
+//        val storeMenuEntityList = userOrderRequest.storeMenuIds.map { storeMenuService.getStoreMenuWithThrow(it) }
+        val storeMenuEntityList = userOrderRequest.userOrderMenuRequestList.map { storeMenuService.getStoreMenuWithThrow(it.storeMenuId) }
         val userOrderEntity = userOrderConverter.toEntity(user, store, storeMenuEntityList)
 
         // 주문
         val orderedEntity = userOrderService.order(userOrderEntity)
 
         // 맵핑
-        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it) }
+//        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it) }
+        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it, getQuantity(userOrderRequest, it.id)) }
 
         userOrderMenuService.order(userOrderMenuEntityList)
 
@@ -53,6 +59,11 @@ class UserOrderBusiness(
         userOrderProducer.sendOrder(orderedEntity)
 
         return userOrderConverter.toResponse(orderedEntity)
+    }
+
+    private fun getQuantity(userOrderRequest: UserOrderRequest, id: Long?): Int {
+        return userOrderRequest.userOrderMenuRequestList.find { it.storeMenuId == id }?.quantity
+            ?: throw ApiException(UserOrderErrorCode.ORDER_MENU_NOT_FOUND)
     }
 
     fun current(user: User): List<UserOrderDetailResponse> {

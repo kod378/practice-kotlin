@@ -23,7 +23,7 @@ class SwaggerConfig {
         return OpenAPI().addSecurityItem(SecurityRequirement().addList("Bearer Authentication"))
             .components(Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
             .info(Info()
-                .title("Demo Apple API")
+                .title("Demo Kotlin API")
                 .description("Demo Kotlin API")
                 .version("1.0.0"))
     }
