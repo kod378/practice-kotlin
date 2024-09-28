@@ -9,6 +9,7 @@ import org.delivery.common.annotation.Converter
 import org.delivery.db.store.StoreEntity
 import org.delivery.db.storemenu.StoreMenuEntity
 import org.delivery.db.userorder.UserOrderEntity
+import java.math.BigDecimal
 
 @Converter
 class UserOrderConverter {
@@ -16,9 +17,8 @@ class UserOrderConverter {
     fun toEntity(
         user: User,
         store: StoreEntity,
-        storeMenuEntityList: List<StoreMenuEntity>,
+        totalAmount: BigDecimal,
     ): UserOrderEntity {
-        val totalAmount = storeMenuEntityList.sumOf { it.amount }
         return UserOrderEntity(
             userId = user.id,
             store = store,
@@ -36,6 +36,7 @@ class UserOrderConverter {
             cookingStartedAt = userOrderEntity.cookingStartedAt,
             deliveryStartedAt = userOrderEntity.deliveryStartedAt,
             receivedAt = userOrderEntity.receivedAt,
+            orderNumber = userOrderEntity.orderNumber
         )
     }
 }

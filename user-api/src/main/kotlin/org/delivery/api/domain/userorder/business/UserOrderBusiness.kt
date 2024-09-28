@@ -16,7 +16,7 @@ import org.delivery.api.domain.userordermenu.service.UserOrderMenuService
 import org.delivery.common.annotation.Business
 import org.delivery.common.error.UserOrderErrorCode
 import org.delivery.common.exception.ApiException
-import org.delivery.common.log.logger
+import org.delivery.db.userorder.UserOrderEntity
 import org.delivery.db.userorder.enums.UserOrderMenuStatus
 import org.springframework.transaction.annotation.Transactional
 
@@ -42,17 +42,17 @@ class UserOrderBusiness(
 
         val store = storeService.getStoreWithThrow(userOrderRequest.storeId)
 
-//        val storeMenuEntityList = userOrderRequest.storeMenuIds.map { storeMenuService.getStoreMenuWithThrow(it) }
         val storeMenuEntityList = userOrderRequest.userOrderMenuRequestList.map { storeMenuService.getStoreMenuWithThrow(it.storeMenuId) }
-        val userOrderEntity = userOrderConverter.toEntity(user, store, storeMenuEntityList)
+
+        val totalAmount = storeMenuEntityList.sumOf { it.amount * getQuantityOrThrow(userOrderRequest, it.id).toBigDecimal() }
+
+        val userOrderEntity = userOrderConverter.toEntity(user, store, totalAmount+store.minimumDeliveryAmount)
 
         // 주문
         val orderedEntity = userOrderService.order(userOrderEntity)
 
         // 맵핑
-//        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it) }
-        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it, getQuantity(userOrderRequest, it.id)) }
-
+        val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it, getQuantityOrThrow(userOrderRequest, it.id)) }
         userOrderMenuService.order(userOrderMenuEntityList)
 
         // 비동기로 가맹점에 주문 알리기
@@ -61,50 +61,33 @@ class UserOrderBusiness(
         return userOrderConverter.toResponse(orderedEntity)
     }
 
-    private fun getQuantity(userOrderRequest: UserOrderRequest, id: Long?): Int {
+    private fun getQuantityOrThrow(userOrderRequest: UserOrderRequest, id: Long?): Int {
         return userOrderRequest.userOrderMenuRequestList.find { it.storeMenuId == id }?.quantity
             ?: throw ApiException(UserOrderErrorCode.ORDER_MENU_NOT_FOUND)
     }
 
     fun current(user: User): List<UserOrderDetailResponse> {
         val currentOrderList = userOrderService.current(user.id)
-
-        // 주문 1건씩 처리
-        val userOrderDetailResponseList = currentOrderList.map { order ->
-
-            // 사용자가 주문한 메뉴
-            val storeMenuList = order.userOrderMenuList
-                .filter { it.status == UserOrderMenuStatus.REGISTERED }
-                .map { it.storeMenu }
-
-            UserOrderDetailResponse(
-                userOrderResponse = userOrderConverter.toResponse(order),
-                storeMenuResponseList = storeMenuConverter.toResponse(storeMenuList),
-                storeResponse =storeConverter.toResponse(order.store)
-            )
-        }
-
-        return userOrderDetailResponseList
+        return userOrderDetailResponseList(currentOrderList)
     }
 
     fun history(user: User): List<UserOrderDetailResponse> {
         val currentOrderList = userOrderService.history(user.id)
+        return userOrderDetailResponseList(currentOrderList)
+    }
 
+    private fun userOrderDetailResponseList(orderList: List<UserOrderEntity>): List<UserOrderDetailResponse> {
         // 주문 1건씩 처리
-        val userOrderDetailResponseList = currentOrderList.map { order ->
-
+        val userOrderDetailResponseList = orderList.map { order ->
             // 사용자가 주문한 메뉴
             val storeMenuList = order.userOrderMenuList
                 .filter { it.status == UserOrderMenuStatus.REGISTERED }
-                .map { it.storeMenu }
-
             UserOrderDetailResponse(
                 userOrderResponse = userOrderConverter.toResponse(order),
-                storeMenuResponseList = storeMenuConverter.toResponse(storeMenuList),
-                storeResponse =storeConverter.toResponse(order.store)
+                userOrderMenuResponseList = userOrderMenuConverter.toResponse(storeMenuList),
+                storeResponse = storeConverter.toResponse(order.store)
             )
         }
-
         return userOrderDetailResponseList
     }
 
@@ -114,11 +97,10 @@ class UserOrderBusiness(
         // 사용자가 주문한 메뉴
         val storeMenuList = order.userOrderMenuList
             .filter { it.status == UserOrderMenuStatus.REGISTERED }
-            .map { it.storeMenu }
 
         return UserOrderDetailResponse(
             userOrderResponse = userOrderConverter.toResponse(order),
-            storeMenuResponseList = storeMenuConverter.toResponse(storeMenuList),
+            userOrderMenuResponseList = userOrderMenuConverter.toResponse(storeMenuList),
             storeResponse =storeConverter.toResponse(order.store)
         )
     }

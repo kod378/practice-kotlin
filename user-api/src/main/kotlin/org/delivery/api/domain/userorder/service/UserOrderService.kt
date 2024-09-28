@@ -6,6 +6,7 @@ import org.delivery.db.userorder.UserOrderEntity
 import org.delivery.db.userorder.enums.UserOrderStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Service
 class UserOrderService(
@@ -60,6 +61,16 @@ class UserOrderService(
     ): UserOrderEntity {
         userOrderEntity.status = UserOrderStatus.ORDER
         userOrderEntity.orderedAt = LocalDateTime.now()
+
+        //주문 번호 생성
+        // 현재 날짜와 시각을 yyyyMMdd-HHmmss 포맷으로 변환
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")
+        val formattedDateTime = currentDateTime.format(formatter)
+
+        val orderNumber = "CUST${userOrderEntity.userId}-${formattedDateTime}"
+        userOrderEntity.orderNumber = orderNumber
+
         return userOrderRepository.save(userOrderEntity)
     }
 

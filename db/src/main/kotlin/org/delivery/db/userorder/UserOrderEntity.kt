@@ -25,6 +25,9 @@ class UserOrderEntity(
     @field:Column(precision = 11, scale = 4, nullable = false)
     var amount: BigDecimal,
 
+    @field:Column(nullable = false, length = 30)
+    var orderNumber: String = "",
+
     var orderedAt: LocalDateTime = LocalDateTime.now(),
 
     var acceptAt: LocalDateTime? = null,
