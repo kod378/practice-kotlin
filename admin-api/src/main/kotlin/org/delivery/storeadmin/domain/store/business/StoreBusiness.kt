@@ -1,6 +1,10 @@
 package org.delivery.storeadmin.domain.store.business
 
 import org.delivery.common.annotation.Business
+import org.delivery.common.error.StoreErrorCode
+import org.delivery.common.exception.ApiException
+import org.delivery.db.store.enums.StoreStatus
+import org.delivery.storeadmin.domain.authorization.model.UserSession
 import org.delivery.storeadmin.domain.store.converter.StoreConverter
 import org.delivery.storeadmin.domain.store.model.StoreRegisterRequest
 import org.delivery.storeadmin.domain.store.model.StoreResponse
@@ -29,5 +33,19 @@ class StoreBusiness(
     fun getStore(id: Long): StoreResponse {
         val storeEntity = storeService.getStoreWithThrow(id)
         return storeConverter.toResponse(storeEntity)
+    }
+
+    @Transactional
+    fun openStore(user: UserSession): StoreResponse {
+        val storeId = user.storeResponse?.id ?: throw ApiException(StoreErrorCode.STORE_NOT_FOUND)
+        val openStore = storeService.changeStatus(storeId, StoreStatus.OPEN)
+        return storeConverter.toResponse(openStore)
+    }
+
+    @Transactional
+    fun closeStore(user: UserSession): StoreResponse {
+        val storeId = user.storeResponse?.id ?: throw ApiException(StoreErrorCode.STORE_NOT_FOUND)
+        val closeStore = storeService.changeStatus(storeId, StoreStatus.CLOSE)
+        return storeConverter.toResponse(closeStore)
     }
 }

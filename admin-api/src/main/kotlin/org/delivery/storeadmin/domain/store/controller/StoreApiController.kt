@@ -9,6 +9,7 @@ import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -33,6 +34,22 @@ class StoreApiController(
         @AuthenticationPrincipal user: UserSession,
     ): Api<StoreResponse?> {
         val response = user.storeResponse?.let { storeBusiness.getStore(it.id) }
+        return Api.OK(response)
+    }
+
+    @PutMapping("/open")
+    fun openStore(
+        @AuthenticationPrincipal user: UserSession,
+    ): Api<StoreResponse> {
+        val response = storeBusiness.openStore(user)
+        return Api.OK(response)
+    }
+
+    @PutMapping("/close")
+    fun closeStore(
+        @AuthenticationPrincipal user: UserSession,
+    ): Api<StoreResponse> {
+        val response = storeBusiness.closeStore(user)
         return Api.OK(response)
     }
 }

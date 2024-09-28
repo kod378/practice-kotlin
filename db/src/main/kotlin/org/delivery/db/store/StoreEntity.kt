@@ -19,6 +19,9 @@ class StoreEntity(
     @field:Enumerated(EnumType.STRING)
     var status: StoreStatus,
 
+    @field:Column(nullable = false)
+    var statusOrder: Int = 2,   // status 순서 (1: OPEN, 2: 나머지)
+
     @field:Enumerated(EnumType.STRING)
     @field:Column(length = 50, nullable = false)
     var category: StoreCategory,

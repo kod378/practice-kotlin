@@ -1,6 +1,7 @@
 package org.delivery.api.domain.store.model
 
 import org.delivery.db.store.enums.StoreCategory
+import org.delivery.db.store.enums.StoreStatus
 import java.math.BigDecimal
 
 data class StoreResponse(
@@ -13,4 +14,5 @@ data class StoreResponse(
     val minimumAmount: BigDecimal,
     val minimumDeliveryAmount: BigDecimal,
     val phoneNumber: String,
+    val status: StoreStatus
 )

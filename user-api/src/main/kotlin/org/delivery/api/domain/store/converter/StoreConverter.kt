@@ -21,7 +21,8 @@ class StoreConverter {
             thumbnailUrl = storeEntity.thumbnailUrl,
             minimumAmount = storeEntity.minimumAmount,
             minimumDeliveryAmount = storeEntity.minimumDeliveryAmount,
-            phoneNumber = storeEntity.phoneNumber
+            phoneNumber = storeEntity.phoneNumber,
+            status = storeEntity.status
         )
     }
 
@@ -36,6 +37,7 @@ class StoreConverter {
             minimumAmount = store.minimumAmount,
             minimumDeliveryAmount = store.minimumDeliveryAmount,
             phoneNumber = store.phoneNumber,
+            status = store.status,
             menus = menus
         )
     }
