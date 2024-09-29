@@ -45,6 +45,7 @@ class StoreUserConverter() {
                 minimumAmount = it.minimumAmount,
                 minimumDeliveryAmount = it.minimumDeliveryAmount,
                 phoneNumber = it.phoneNumber,
+                status = it.status
             ) }
         )
     }
