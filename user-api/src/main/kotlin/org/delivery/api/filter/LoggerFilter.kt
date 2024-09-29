@@ -20,6 +20,12 @@ class LoggerFilter: Filter {
         val cacheRequest = ContentCachingRequestWrapper(request as HttpServletRequest)
         val cacheResponse = ContentCachingResponseWrapper(response as HttpServletResponse)
 
+        // 자꾸 [user-agent : python-requests/2.27.1] 이런식으로 로그가 찍히는데 이걸 막기 위해
+        // python-requests는 다 차단
+        if (cacheRequest.getHeader("user-agent")?.contains("python-requests") == true) {
+            return
+        }
+
         chain?.doFilter(cacheRequest, cacheResponse)
 
         val headerNames = cacheRequest.headerNames
