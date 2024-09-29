@@ -14,4 +14,5 @@ enum class TokenErrorCode(
     EXPIRED_TOKEN(401, 2001, "만료된 토큰입니다."),
     TOKEN_EXCEPTION(400, 2002, "알 수 없는 토큰 에러입니다."),
     AUTHORIZATION_TOKEN_NOT_FOUND(400, 2003, "Authorization 토큰이 존재하지 않습니다."),
+    BAD_CREDENTIALS(401, 2004, "잘못된 인증 정보입니다."),
 }
