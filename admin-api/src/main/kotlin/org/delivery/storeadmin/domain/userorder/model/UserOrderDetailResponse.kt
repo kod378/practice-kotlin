@@ -1,9 +1,9 @@
 package org.delivery.storeadmin.domain.userorder.model
 
-import org.delivery.storeadmin.domain.storemenu.model.StoreMenuResponse
+import org.delivery.storeadmin.domain.userordermenu.model.UserOrderMenuResponse
 
 data class UserOrderDetailResponse(
 
     val userOrderResponse: UserOrderResponse,
-    val storeMenuResponseList: List<StoreMenuResponse>,
+    val userOrderMenuResponseList: List<UserOrderMenuResponse>,
 )

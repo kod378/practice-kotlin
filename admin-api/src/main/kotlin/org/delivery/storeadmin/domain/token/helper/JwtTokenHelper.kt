@@ -63,8 +63,6 @@ class JwtTokenHelper(
 
     private fun jwtTokenWithPlusHour(data: Map<String, Any>, subject: String, tokenPlusHour: Long): Token {
         val expiredLocalDateTime = LocalDateTime.now().plusHours(tokenPlusHour)
-//        val expiredLocalDateTime = LocalDateTime.now().plusMinutes(tokenPlusHour) //x minutes for testing
-//        val expiredLocalDateTime = LocalDateTime.now().plusSeconds(tokenPlusHour) //x second for testing
         val expiredAt = Date.from(
             expiredLocalDateTime.atZone(
                 ZoneId.systemDefault()

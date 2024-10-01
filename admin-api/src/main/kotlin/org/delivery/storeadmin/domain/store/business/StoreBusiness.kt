@@ -9,6 +9,7 @@ import org.delivery.storeadmin.domain.store.converter.StoreConverter
 import org.delivery.storeadmin.domain.store.model.StoreRegisterRequest
 import org.delivery.storeadmin.domain.store.model.StoreResponse
 import org.delivery.storeadmin.domain.store.service.StoreService
+import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService
 import org.delivery.storeadmin.domain.storeuser.service.StoreUserService
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 class StoreBusiness(
     private val storeService: StoreService,
     private val storeConverter: StoreConverter,
-    private val storeUserService: StoreUserService
+    private val storeUserService: StoreUserService,
+    private val storeMenuService: StoreMenuService
 ) {
 
     @Transactional
@@ -38,6 +40,11 @@ class StoreBusiness(
     @Transactional
     fun openStore(user: UserSession): StoreResponse {
         val storeId = user.storeResponse?.id ?: throw ApiException(StoreErrorCode.STORE_NOT_FOUND)
+        // if menu is empty, throw exception
+        val storeMenus = storeMenuService.getStoreMenusByStoreId(storeId)
+        if (storeMenus.isEmpty()) {
+            throw ApiException(StoreErrorCode.STORE_MENU_EMPTY)
+        }
         val openStore = storeService.changeStatus(storeId, StoreStatus.OPEN)
         return storeConverter.toResponse(openStore)
     }

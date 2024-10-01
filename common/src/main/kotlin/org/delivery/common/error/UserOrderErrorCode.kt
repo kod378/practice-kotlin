@@ -11,4 +11,5 @@ enum class UserOrderErrorCode(
 ): ErrorCodeIfs {
 
     ORDER_MENU_NOT_FOUND(404, 6404, "주문 메뉴를 찾을 수 없습니다."),
+    ORDER_NOT_FOUND(404, 6405, "주문을 찾을 수 없습니다."),
 }

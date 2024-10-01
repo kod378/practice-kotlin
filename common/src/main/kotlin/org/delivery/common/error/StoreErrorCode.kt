@@ -10,5 +10,6 @@ enum class StoreErrorCode(
     override val description: String
 ): ErrorCodeIfs {
 
-    STORE_NOT_FOUND(404, 3404, "스토어를 찾을 수 없습니다.")
+    STORE_NOT_FOUND(404, 3404, "스토어를 찾을 수 없습니다."),
+    STORE_MENU_EMPTY(400, 3400, "스토어 메뉴가 없습니다."),
 }
