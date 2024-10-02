@@ -9,7 +9,7 @@ class UserSseConnection private constructor(
     private val connectionPoolIfs: ConnectionPoolIfs<String, UserSseConnection>,
     private val objectMapper: ObjectMapper
 ) {
-    val sseEmitter = SseEmitter(1000 * 60)  // ms
+    val sseEmitter = SseEmitter(1000 * 60 * 30)  // ms, 30분
 
     init {
         sseEmitter.onTimeout {
@@ -24,7 +24,7 @@ class UserSseConnection private constructor(
         connectionPoolIfs.addSession(uniqueKey, this)
 
         // onopen 메시지
-        sendMessage(data = "connected", eventName = "open")
+        sendMessage(data = connected, eventName = "open")
     }
 
     companion object {
@@ -65,3 +65,5 @@ class UserSseConnection private constructor(
         return uniqueKey == other.uniqueKey
     }
 }
+
+const val connected: Boolean = true
