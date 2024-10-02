@@ -19,6 +19,9 @@ spring:
   application:
     name: admin-api
 
+  jpa:
+    open-in-view: false
+
 token:
   secret:
     key: AdminSpringBootJWTHelperTokenSecretKeyValue123!@#

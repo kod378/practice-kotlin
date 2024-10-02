@@ -16,6 +16,9 @@ spring:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
 
+  jpa:
+    open-in-view: false
+
 token:
   secret:
     key: UserSpringBootJWTHelperTokenSecretKeyValue123!@#
