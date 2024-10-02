@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class UserOrderService(
     private val userOrderRepository: UserOrderRepository,
 ) {
@@ -25,6 +26,6 @@ class UserOrderService(
     fun changeStatus(userOrderId: Long, status: UserOrderStatus) {
         val userOrder = getUserOrder(userOrderId) ?: throw ApiException(UserOrderErrorCode.ORDER_NOT_FOUND, "주문을 찾을 수 없습니다. userOrderId=$userOrderId")
         userOrder.status = status
-        userOrderRepository.save(userOrder)
+//        userOrderRepository.save(userOrder)
     }
 }

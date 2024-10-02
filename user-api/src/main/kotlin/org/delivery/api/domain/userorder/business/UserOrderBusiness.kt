@@ -21,6 +21,7 @@ import org.delivery.db.userorder.enums.UserOrderMenuStatus
 import org.springframework.transaction.annotation.Transactional
 
 @Business
+@Transactional(readOnly = true)
 class UserOrderBusiness(
     private val userOrderService: UserOrderService,
     private val storeMenuService: StoreMenuService,
@@ -55,10 +56,13 @@ class UserOrderBusiness(
         val userOrderMenuEntityList = storeMenuEntityList.map { userOrderMenuConverter.toEntity(orderedEntity, it, getQuantityOrThrow(userOrderRequest, it.id)) }
         userOrderMenuService.order(userOrderMenuEntityList)
 
-        // 비동기로 가맹점에 주문 알리기
-        userOrderProducer.sendOrder(orderedEntity)
-
         return userOrderConverter.toResponse(orderedEntity)
+    }
+
+    fun userOrderAndSendOrder(user: User, userOrderRequest: UserOrderRequest): UserOrderResponse {
+        val response = userOrder(user, userOrderRequest)
+        userOrderProducer.sendOrder(response.id)
+        return response
     }
 
     private fun getQuantityOrThrow(userOrderRequest: UserOrderRequest, id: Long?): Int {

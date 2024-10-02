@@ -13,7 +13,7 @@ class UserOrderApiController(
     private val userOrderBusiness: UserOrderBusiness
 ) {
 
-    @PutMapping("/:orderId/accept")
+    @PutMapping("/{orderId}/accept")
     fun accept(
         @PathVariable orderId: Long
     ): Api<Long> {
@@ -21,11 +21,36 @@ class UserOrderApiController(
         return Api.OK(orderId);
     }
 
-    @PutMapping("/:orderId/cancel")
+    @PutMapping("/{orderId}/cancel")
     fun cancel(
         @PathVariable orderId: Long
     ): Api<Long> {
         userOrderBusiness.cancel(orderId)
         return Api.OK(orderId);
     }
+
+    @PutMapping("/{orderId}/cooking")
+    fun cooking(
+        @PathVariable orderId: Long
+    ): Api<Long> {
+        userOrderBusiness.cooking(orderId)
+        return Api.OK(orderId);
+    }
+
+    @PutMapping("/{orderId}/delivery")
+    fun delivery(
+        @PathVariable orderId: Long
+    ): Api<Long> {
+        userOrderBusiness.delivery(orderId)
+        return Api.OK(orderId);
+    }
+
+    @PutMapping("/{orderId}/receive")
+    fun receive(
+        @PathVariable orderId: Long
+    ): Api<Long> {
+        userOrderBusiness.receive(orderId)
+        return Api.OK(orderId);
+    }
+
 }

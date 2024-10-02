@@ -6,8 +6,10 @@ import org.delivery.db.store.StoreEntity
 import org.delivery.db.store.enums.StoreCategory
 import org.delivery.db.store.enums.StoreStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class StoreService(
     private val storeRepository: org.delivery.db.store.StoreRepository
 ) {

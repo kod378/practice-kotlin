@@ -27,7 +27,7 @@ class UserOrderApiController(
         @Parameter(hidden = true) @UserSession user: User,
         @Valid @RequestBody userOrderRequest: UserOrderRequest
     ): Api<UserOrderResponse> {
-        val response = userOrderBusiness.userOrder(user, userOrderRequest)
+        val response = userOrderBusiness.userOrderAndSendOrder(user, userOrderRequest)
         return Api.OK(response)
     }
 

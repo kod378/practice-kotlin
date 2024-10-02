@@ -14,6 +14,7 @@ import org.delivery.storeadmin.domain.userordermenu.service.UserOrderMenuService
 import org.springframework.transaction.annotation.Transactional
 
 @Business
+@Transactional
 class UserOrderBusiness(
     private val userOrderService: UserOrderService,
     private val userOrderConverter: UserOrderConverter,
@@ -30,6 +31,7 @@ class UserOrderBusiness(
      * 연결된 세션 찾아서
      * push
      */
+    @Transactional(readOnly = true)
     fun pushUserOrder(userOrderMessage: UserOrderMessage) {
 
         // user order entity
@@ -50,7 +52,7 @@ class UserOrderBusiness(
         )
 
         // 스토어유저에게 push
-        userConnection.sendMessage(pushData)
+        userConnection.sendMessage(pushData, "order")
     }
 
     fun accept(orderId: Long) {
@@ -59,5 +61,17 @@ class UserOrderBusiness(
 
     fun cancel(orderId: Long) {
         userOrderService.changeStatus(orderId, UserOrderStatus.CANCEL)
+    }
+
+    fun cooking(orderId: Long) {
+        userOrderService.changeStatus(orderId, UserOrderStatus.COOKING)
+    }
+
+    fun delivery(orderId: Long) {
+        userOrderService.changeStatus(orderId, UserOrderStatus.DELIVERY)
+    }
+
+    fun receive(orderId: Long) {
+        userOrderService.changeStatus(orderId, UserOrderStatus.RECEIVE)
     }
 }

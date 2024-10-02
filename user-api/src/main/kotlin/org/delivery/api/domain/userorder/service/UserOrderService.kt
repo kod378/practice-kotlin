@@ -5,10 +5,12 @@ import org.delivery.common.exception.ApiException
 import org.delivery.db.userorder.UserOrderEntity
 import org.delivery.db.userorder.enums.UserOrderStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Service
+@Transactional(readOnly = true)
 class UserOrderService(
     private val userOrderRepository: org.delivery.db.userorder.UserOrderRepository
 ) {
@@ -52,9 +54,10 @@ class UserOrderService(
 
     // 과거 주문한 내역
     fun history(userId: Long): List<UserOrderEntity> {
-        return getUserOrders(userId, listOf(UserOrderStatus.RECEIVE))
+        return getUserOrders(userId, listOf(UserOrderStatus.RECEIVE, UserOrderStatus.CANCEL))
     }
 
+    @Transactional
     // 주문 (create)
     fun order(
         userOrderEntity: UserOrderEntity
