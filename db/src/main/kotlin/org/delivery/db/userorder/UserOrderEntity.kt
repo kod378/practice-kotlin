@@ -38,6 +38,8 @@ class UserOrderEntity(
 
     var receivedAt: LocalDateTime? = null,
 
+    var cancelAt: LocalDateTime? = null,
+
     @field:OneToMany(mappedBy = "userOrder", fetch = FetchType.LAZY)
     var userOrderMenuList: MutableList<UserOrderMenuEntity> = mutableListOf(),
 ): BaseEntity()

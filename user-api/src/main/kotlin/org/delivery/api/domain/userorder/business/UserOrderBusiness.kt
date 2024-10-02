@@ -59,6 +59,7 @@ class UserOrderBusiness(
         return userOrderConverter.toResponse(orderedEntity)
     }
 
+    @Transactional
     fun userOrderAndSendOrder(user: User, userOrderRequest: UserOrderRequest): UserOrderResponse {
         val response = userOrder(user, userOrderRequest)
         userOrderProducer.sendOrder(response.id)

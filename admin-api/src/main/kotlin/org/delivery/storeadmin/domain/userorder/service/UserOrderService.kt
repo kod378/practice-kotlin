@@ -22,10 +22,7 @@ class UserOrderService(
         return userOrderRepository.findUserOrderWithMenuListById(userOrderId)
     }
 
-    @Transactional
-    fun changeStatus(userOrderId: Long, status: UserOrderStatus) {
-        val userOrder = getUserOrder(userOrderId) ?: throw ApiException(UserOrderErrorCode.ORDER_NOT_FOUND, "주문을 찾을 수 없습니다. userOrderId=$userOrderId")
-        userOrder.status = status
-//        userOrderRepository.save(userOrder)
+    fun getUserOrderOrThrow(userOrderId: Long): UserOrderEntity {
+        return getUserOrder(userOrderId) ?: throw ApiException(UserOrderErrorCode.ORDER_NOT_FOUND, "주문을 찾을 수 없습니다. userOrderId=$userOrderId")
     }
 }

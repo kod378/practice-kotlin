@@ -12,6 +12,7 @@ import org.delivery.storeadmin.domain.userorder.service.UserOrderService
 import org.delivery.storeadmin.domain.userordermenu.converter.UserOrderMenuConverter
 import org.delivery.storeadmin.domain.userordermenu.service.UserOrderMenuService
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Business
 @Transactional
@@ -56,22 +57,32 @@ class UserOrderBusiness(
     }
 
     fun accept(orderId: Long) {
-        userOrderService.changeStatus(orderId, UserOrderStatus.ACCEPT)
+        val userOrderEntity = userOrderService.getUserOrderOrThrow(orderId)
+        userOrderEntity.status = UserOrderStatus.ACCEPT
+        userOrderEntity.acceptAt = LocalDateTime.now()
     }
 
     fun cancel(orderId: Long) {
-        userOrderService.changeStatus(orderId, UserOrderStatus.CANCEL)
+        val userOrderEntity = userOrderService.getUserOrderOrThrow(orderId)
+        userOrderEntity.status = UserOrderStatus.CANCEL
+        userOrderEntity.cancelAt = LocalDateTime.now()
     }
 
     fun cooking(orderId: Long) {
-        userOrderService.changeStatus(orderId, UserOrderStatus.COOKING)
+        val userOrderEntity = userOrderService.getUserOrderOrThrow(orderId)
+        userOrderEntity.status = UserOrderStatus.COOKING
+        userOrderEntity.cookingStartedAt = LocalDateTime.now()
     }
 
     fun delivery(orderId: Long) {
-        userOrderService.changeStatus(orderId, UserOrderStatus.DELIVERY)
+        val userOrderEntity = userOrderService.getUserOrderOrThrow(orderId)
+        userOrderEntity.status = UserOrderStatus.DELIVERY
+        userOrderEntity.deliveryStartedAt = LocalDateTime.now()
     }
 
     fun receive(orderId: Long) {
-        userOrderService.changeStatus(orderId, UserOrderStatus.RECEIVE)
+        val userOrderEntity = userOrderService.getUserOrderOrThrow(orderId)
+        userOrderEntity.status = UserOrderStatus.RECEIVE
+        userOrderEntity.receivedAt = LocalDateTime.now()
     }
 }
