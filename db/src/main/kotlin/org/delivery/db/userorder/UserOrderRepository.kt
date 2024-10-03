@@ -30,4 +30,10 @@ interface UserOrderRepository: JpaRepository<UserOrderEntity, Long> {
     fun findAllByIdAndStatusAndUserId(id: Long?, status: UserOrderStatus?, userId: Long?): UserOrderEntity?
 
     fun findAllByIdAndUserId(id: Long?, userId: Long?): UserOrderEntity?
+
+    fun findUserOrdersByStoreIdAndStatusIn(
+        orderId: Long,
+        orderStatusList: List<UserOrderStatus>
+    ): List<UserOrderEntity>
+
 }

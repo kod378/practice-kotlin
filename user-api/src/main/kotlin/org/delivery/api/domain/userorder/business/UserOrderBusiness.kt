@@ -72,13 +72,11 @@ class UserOrderBusiness(
     }
 
     fun current(user: User): List<UserOrderDetailResponse> {
-        val currentOrderList = userOrderService.current(user.id)
-        return userOrderDetailResponseList(currentOrderList)
+        return userOrderDetailResponseList(userOrderService.current(user.id))
     }
 
     fun history(user: User): List<UserOrderDetailResponse> {
-        val currentOrderList = userOrderService.history(user.id)
-        return userOrderDetailResponseList(currentOrderList)
+        return userOrderDetailResponseList(userOrderService.history(user.id))
     }
 
     private fun userOrderDetailResponseList(orderList: List<UserOrderEntity>): List<UserOrderDetailResponse> {

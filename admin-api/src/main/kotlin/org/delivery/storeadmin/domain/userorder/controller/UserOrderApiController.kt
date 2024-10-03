@@ -1,7 +1,11 @@
 package org.delivery.storeadmin.domain.userorder.controller
 
 import org.delivery.common.api.Api
+import org.delivery.storeadmin.domain.authorization.model.UserSession
 import org.delivery.storeadmin.domain.userorder.business.UserOrderBusiness
+import org.delivery.storeadmin.domain.userorder.model.UserOrderDetailResponse
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -51,6 +55,13 @@ class UserOrderApiController(
     ): Api<Long> {
         userOrderBusiness.receive(orderId)
         return Api.OK(orderId);
+    }
+
+    @GetMapping("/history")
+    fun history(
+        @AuthenticationPrincipal user: UserSession
+    ): Api<List<UserOrderDetailResponse>> {
+        return Api.OK(userOrderBusiness.history(user))
     }
 
 }

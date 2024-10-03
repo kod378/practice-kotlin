@@ -2,9 +2,11 @@ package org.delivery.storeadmin.domain.userorder.business
 
 import org.delivery.common.annotation.Business
 import org.delivery.common.message.model.UserOrderMessage
+import org.delivery.db.userorder.UserOrderEntity
+import org.delivery.db.userorder.enums.UserOrderMenuStatus
 import org.delivery.db.userorder.enums.UserOrderStatus
+import org.delivery.storeadmin.domain.authorization.model.UserSession
 import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool
-import org.delivery.storeadmin.domain.storemenu.converter.StoreMenuConverter
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService
 import org.delivery.storeadmin.domain.userorder.converter.UserOrderConverter
 import org.delivery.storeadmin.domain.userorder.model.UserOrderDetailResponse
@@ -85,4 +87,22 @@ class UserOrderBusiness(
         userOrderEntity.status = UserOrderStatus.RECEIVE
         userOrderEntity.receivedAt = LocalDateTime.now()
     }
+
+    fun history(user: UserSession): List<UserOrderDetailResponse> {
+        val historyUserOrderList = userOrderService.history(user.id)
+        return userOrderDetailResponseList(historyUserOrderList)
+    }
+
+    private fun userOrderDetailResponseList(userOrderList: List<UserOrderEntity>): List<UserOrderDetailResponse> {
+        return userOrderList.map { userOrderEntity ->
+            val storeMenuList = userOrderEntity.userOrderMenuList
+                .filter { it.status == UserOrderMenuStatus.REGISTERED }
+            UserOrderDetailResponse(
+                userOrderResponse = userOrderConverter.toResponse(userOrderEntity),
+                userOrderMenuResponseList = userOrderMenuConverter.toResponse(storeMenuList)
+            )
+        }
+    }
+
+
 }

@@ -25,4 +25,9 @@ class UserOrderService(
     fun getUserOrderOrThrow(userOrderId: Long): UserOrderEntity {
         return getUserOrder(userOrderId) ?: throw ApiException(UserOrderErrorCode.ORDER_NOT_FOUND, "주문을 찾을 수 없습니다. userOrderId=$userOrderId")
     }
+
+    fun history(orderId: Long): List<UserOrderEntity> {
+        return userOrderRepository.findUserOrdersByStoreIdAndStatusIn(
+            orderId, listOf(UserOrderStatus.RECEIVE, UserOrderStatus.CANCEL))
+    }
 }
