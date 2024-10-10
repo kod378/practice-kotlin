@@ -46,7 +46,7 @@
 **RabbitMQ**를 활용한 비동기 처리와 SSE 연결을 관리하며, `sseConnectionPool`을 통해 여러 클라이언트의 연결을 유지합니다.
 
 - 커넥션풀: `admin-api.src.main.kotlin.org.delivery.storeadmin.domain.sse.connection.model.UserSseConnection`
-- MQ설정: `user-api.src.main.kotlin.org.delivery.api.config.rabbitmq.RabbitMqconfig`
+- MQ설정: `user-api.src.main.kotlin.org.delivery.api.config.rabbitmq.RabbitMqConfig`
 
 ---
 
